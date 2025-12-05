@@ -24,7 +24,7 @@ const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), { s
  */
 const MarkdownViewer = ({ content }: { content: string }) => {
   return (
-    <article data-color-mode="dark" className="prose dark:prose-invert max-w-none">
+    <article data-color-mode="light" className="prose max-w-none">
       <MarkdownPreview source={content} className="my-8 rounded-md p-6" />
     </article>
   )
