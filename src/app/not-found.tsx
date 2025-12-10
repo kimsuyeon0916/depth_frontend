@@ -2,6 +2,6 @@
 
 import React from 'react'
 
-export default async function NotFound() {
+export default function NotFound() {
   return <div></div>
 }

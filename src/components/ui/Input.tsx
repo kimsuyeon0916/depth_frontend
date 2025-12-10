@@ -1,21 +1,25 @@
-import React from 'react';
+import React from 'react'
+import clsx from 'clsx'
 
 type BaseInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   icon?: React.ReactNode
 }
 
-export default async function Input({
-                                      required = false,
-                                      icon,
-                                      ...rest
-                                    }: BaseInputProps) {
+export default function Input({ required = false, icon, ...rest }: BaseInputProps) {
   return (
-    <div className='relative'>
-      <input className='bg-gray-100 py-2.5 pl-8.5 pr-2 rounded-md text-xs' placeholder='검색어를 입력하세요...' {...rest}/>
+    <div className="relative">
+      <input
+        className={clsx(
+          'h-10 w-full rounded-md bg-gray-200 py-2.5 pr-3 text-xs focus:ring-1 focus:ring-gray-300',
+          icon ? 'pl-8.5' : 'pl-3',
+        )}
+        placeholder="검색어를 입력하세요..."
+        {...rest}
+      />
       {/* todo 아이콘 배치 */}
-      {icon && <span className='absolute inset-y-0 flex items-center justify-center left-2'>
-        {icon}
-      </span>}
+      {icon && (
+        <span className="absolute inset-y-0 left-2 flex items-center justify-center">{icon}</span>
+      )}
     </div>
   )
 }
