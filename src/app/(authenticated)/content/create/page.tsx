@@ -1,9 +1,6 @@
-import React from 'react';
+import React from 'react'
+import ContentCreateForm from '@/features/(authenticated)/content/create/ContentCreateForm'
 
 export default async function ContentCreatePage() {
-  return (
-    <div>
-
-    </div>
-  )
+  return <ContentCreateForm />
 }
