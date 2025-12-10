@@ -1,0 +1,29 @@
+@reference "../../../app/globals.css";
+
+@layer components {
+  .btn-basic {
+    @apply inline-flex items-center gap-1.5
+    rounded-md px-3.5 py-2
+    text-xs font-medium
+    transition-colors
+    focus-visible:outline-none
+    focus-visible:ring-2
+    focus-visible:ring-offset-2
+    focus-visible:ring-offset-black
+    disabled:cursor-not-allowed
+    disabled:opacity-60;
+  }
+
+  .btn-add {
+    @apply text-white
+    bg-blue-500
+    hover:bg-blue-400
+    dark:bg-blue-400
+    focus-visible:ring-blue-600;
+  }
+
+  .btn-cancel {
+    @apply text-gray-700
+    border border-gray-300
+  }
+}
