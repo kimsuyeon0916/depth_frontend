@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import '@/app/globals.css'
-import ReactQueryProvider from '@/app/_providers/ReactQueryProvider'
+import { ReactQueryProvider, ReactGoogleProvider } from '@/app/_providers/_index'
 import { suit } from '@/font/suit/font'
 
 export const metadata: Metadata = {
@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="ko" className={suit.className}>
       <body>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactGoogleProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </ReactGoogleProvider>
       </body>
     </html>
   )
