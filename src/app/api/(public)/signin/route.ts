@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(payload, { status: upstream.status })
     }
 
-    // Set-Cookie로 내려준 accessToken/refreshToken을 꺼내기
+    // TODO: Set-Cookie로 내려준 accessToken/refreshToken을 꺼내기
     const setCookies: string[] =
       upstream.headers.getSetCookie?.() ?? [upstream.headers.get('set-cookie')].filter(Boolean)
 
@@ -64,9 +64,7 @@ export async function POST(req: NextRequest) {
 
     const res = NextResponse.json({ success: true })
 
-    // 프론트에서는 snake_case 쿠키로 다시 저장 (server()가 이 이름을 읽음)
-    // 로컬(http) + SameSite=None 조합이면 저장 거부될 수 있어(크롬) 필요하면 여기서 sameSite 보정
-    res.cookies.set('access_token', decodeURIComponent(accessToken), {
+    res.cookies.set('access_token', accessToken, {
       httpOnly: true,
       secure: IS_PROD,
       sameSite: ACCESS_TOKEN_SAME_SITE,
@@ -74,7 +72,7 @@ export async function POST(req: NextRequest) {
       maxAge: ACCESS_TOKEN_MAX_AGE,
     })
 
-    res.cookies.set('refresh_token', decodeURIComponent(refreshToken), {
+    res.cookies.set('refresh_token', refreshToken, {
       httpOnly: true,
       secure: IS_PROD,
       sameSite: REFRESH_TOKEN_SAME_SITE,
