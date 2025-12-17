@@ -2,7 +2,7 @@ import React from 'react'
 import Input from '@/components/ui/Input'
 import Link from 'next/link'
 import Button from '@/components/ui/button/Button'
-import AvatarButton from '@/components/layout/header/AvatarButton'
+import ProfileMenu from '@/components/layout/header/ProfileMenu'
 import { Search, SquarePen } from 'lucide-react'
 
 export default function HeaderElement({ location }: { location: locationTypes }) {
@@ -20,7 +20,7 @@ export default function HeaderElement({ location }: { location: locationTypes })
             <Link href="/content">
               <Button icon={<SquarePen size={16} />}>글쓰기</Button>
             </Link>
-            <AvatarButton />
+            <ProfileMenu />
           </>
         )}
         {isContentCreatePage && (

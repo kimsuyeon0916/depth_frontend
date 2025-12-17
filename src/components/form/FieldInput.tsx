@@ -13,7 +13,7 @@ type FormInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   outerClassName?: string
 }
 
-export default function FormInput(props: FormInputProps) {
+export default function FieldInput(props: FormInputProps) {
   const { label, errorMessage, required, name, inputClassName, outerClassName, ...rest } = props
   return (
     <div className={clsx('flex flex-col gap-1', outerClassName)}>
@@ -28,7 +28,7 @@ export default function FormInput(props: FormInputProps) {
         name={name}
         aria-label={label}
         aria-labelledby={label}
-        inputClassName={inputClassName}
+        className={inputClassName}
         {...rest}
       />
       {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
