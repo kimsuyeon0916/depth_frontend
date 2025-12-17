@@ -2,7 +2,7 @@
 
 import React, { useActionState } from 'react'
 import { signupAction } from '@/features/(public)/signup/signupAction'
-import FormInput from '@/components/form/FormInput'
+import FieldInput from '@/components/form/FieldInput'
 import { SignupFormTypes } from '@/features/(public)/signup/types/SignupForm.types'
 
 export const initialState: FormStateTypes<SignupFormTypes> = {
@@ -27,7 +27,7 @@ export default function SignupForm({ token, provider }: { token: string; provide
       <input type="hidden" name="provider" value={provider} />
       <input type="hidden" name="token" value={token} />
 
-      <FormInput
+      <FieldInput
         name="name"
         label="이름"
         id="name"
@@ -36,7 +36,7 @@ export default function SignupForm({ token, provider }: { token: string; provide
         errorMessage={state.fieldErrors?.name?.[0]}
       />
 
-      <FormInput
+      <FieldInput
         name="phoneNumber"
         placeholder="010-1234-5678"
         label="전화번호"
