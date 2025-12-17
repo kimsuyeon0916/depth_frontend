@@ -26,7 +26,7 @@ export async function client<TRes, TBody = unknown>(
 
   if (res.status === 204) return null as TRes
 
-  const data = await res.json().catch(() => null)
+  const data = await res.json()
   if (!res.ok) throw new HttpErrorTypes(res.status, data?.message ?? `HTTP ${res.status}`, data)
   return data as TRes
 }
