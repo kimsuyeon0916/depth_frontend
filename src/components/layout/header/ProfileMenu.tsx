@@ -55,7 +55,7 @@ export default function ProfileMenu() {
   }
 
   const handleLogout = async () => {
-    // TODO: 로그아웃 API 연동
+    await fetch(`/api/auth/logout`, { method: 'DELETE', cache: 'no-store' })
     setOpen(false)
     router.push('/signin')
     router.refresh()
