@@ -36,12 +36,12 @@ export async function signupAction(
   try {
     await server('/api/v1/users/signup', {
       method: 'POST',
-      body: {
+      body: JSON.stringify({
         idToken: token,
         name,
         phoneNumber,
         provider,
-      },
+      }),
       cache: 'no-store',
     })
   } catch (err) {
