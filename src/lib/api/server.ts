@@ -82,21 +82,9 @@ async function refreshAccessToken(): Promise<{ accessToken: string; refreshToken
 
   if (!newAccessToken || !newRefreshToken) return null
 
-  cookieStore.set('access_token', newAccessToken, {
-    httpOnly: true,
-    secure: IS_PROD,
-    sameSite: ACCESS_TOKEN_SAME_SITE,
-    path: ACCESS_TOKEN_PATH,
-    maxAge: ACCESS_TOKEN_MAX_AGE,
-  })
+  cookieStore.set('access_token', newAccessToken)
 
-  cookieStore.set('refresh_token', newRefreshToken, {
-    httpOnly: true,
-    secure: IS_PROD,
-    sameSite: REFRESH_TOKEN_SAME_SITE,
-    path: REFRESH_TOKEN_PATH,
-    maxAge: REFRESH_TOKEN_MAX_AGE,
-  })
+  cookieStore.set('refresh_token', newRefreshToken)
 
   return { accessToken: newAccessToken, refreshToken: newRefreshToken }
 }
