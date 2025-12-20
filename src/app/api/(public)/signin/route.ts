@@ -66,6 +66,17 @@ export async function POST(req: NextRequest) {
     const upstreamJson = await upstream.json()
     res.cookies.set('role', upstreamJson.role)
 
+    const upstreamJson = await upstream.json()
+
+    // TODO 권한 이거 이렇게 주니까 여기서 처리해야하는데 로직을 어떻게 할지 다시 생각 (리프레쉬랑 같게 공급)
+    res.cookies.set('role', upstreamJson.role, {
+      httpOnly: true,
+      secure: IS_PROD,
+      sameSite: REFRESH_TOKEN_SAME_SITE,
+      path: REFRESH_TOKEN_PATH,
+      maxAge: REFRESH_TOKEN_MAX_AGE,
+    })
+
     return res
   } catch (error) {
     if (error instanceof HttpErrorTypes) {
