@@ -6,7 +6,7 @@ import type { Comment } from '../types/Comment.types'
 import {
   useCreateCommentMutation,
   useDeleteCommentMutation,
-  useGetComments,
+  useGetCommentsQuery,
   useUpdateCommentMutation,
 } from '../queries/useComment'
 import { CommentItem } from './CommentItem'
@@ -21,7 +21,7 @@ export function CommentSection({
 }) {
   // TODO: 유저 정보 조회 API 연동
   const currentUserId = 1
-  const { data: comments = [] } = useGetComments(postId)
+  const { data: comments = [] } = useGetCommentsQuery(postId)
 
   const totalCount = useMemo(() => countAll(comments), [comments])
 

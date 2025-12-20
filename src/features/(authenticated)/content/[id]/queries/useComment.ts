@@ -7,7 +7,7 @@ import { GetCommentsResponse } from '../types/Comment.types'
 const commentKey = (postId: number) => ['comment', postId] as const
 
 // 댓글 조회
-export function useGetComments(postId: number) {
+export function useGetCommentsQuery(postId: number) {
   return useQuery<GetCommentsResponse>({
     queryKey: commentKey(postId),
     queryFn: () => getComments(postId),
