@@ -10,11 +10,10 @@ import { TOPIC_LABEL } from '@/features/(authenticated)/content/create/types/Top
 export default async function ContentDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params
 
-  const post = (await getPostDetail(id)) ?? mockPost
+  const post = await getPostDetail(id).catch(() => mockPost)
   // TODO: 유저 정보 조회 API 연동
   const currentUserId = 1
-  // TODO: 게시글 상세 조회 API 응답값에 writeId 추가 요청
-  const isOwner = post && currentUserId === 1 // post.writerId
+  const isOwner = post && currentUserId === post.writerId
 
   return (
     post && (

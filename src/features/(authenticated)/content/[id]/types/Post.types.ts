@@ -1,7 +1,7 @@
 import { TopicType } from '../../create/types/Topic.types'
 
 export type Post = {
-  writerId: number // TODO: 필드 추가 요청
+  writerId: number
   postId: number
   writerName: string
   title: string
