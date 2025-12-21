@@ -37,8 +37,10 @@ export async function createPostAction(
     }
   }
 
+  let postId = null
   try {
-    await createPost({ ...values })
+    const location = await createPost({ ...values })
+    postId = extractIdFromLocation(location)
   } catch {
     return {
       success: false,
@@ -50,7 +52,8 @@ export async function createPostAction(
 
   const to = HREF_BY_TOPIC[values.topic] ?? '/'
   revalidatePath(to)
-  redirect(to)
+
+  redirect(postId ? `/post/${postId}` : to)
 }
 
 function validate(values: PostFormValues) {
@@ -63,4 +66,10 @@ function validate(values: PostFormValues) {
   if (!values.content) fieldErrors.content = ['내용을 입력해 주세요.']
 
   return fieldErrors
+}
+
+function extractIdFromLocation(location?: string | null) {
+  if (!location) return null
+  const parts = location.split('/').filter(Boolean)
+  return parts.at(-1) ?? null
 }
