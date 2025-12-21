@@ -25,6 +25,7 @@ export type GetPostsResponse = {
 }
 
 export type CreatePostRequest = {
+  draftId: string
   topic: TopicType
   title: string
   content: string
