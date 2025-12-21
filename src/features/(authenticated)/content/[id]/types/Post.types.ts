@@ -8,8 +8,9 @@ export type Post = {
   topic: TopicType
   wroteAt: string
   content: string
-  commentsCount: number
   tags?: string[] // TODO: 필요 여부 검토
+  // TODO: 리액션 관련 프로퍼티 추가 예정
+  commentsCount: number
 }
 
 export type HighlightType = 'BY_ADMIN' | 'BY_REACTION' | 'BY_VIEW' | 'NONE'
