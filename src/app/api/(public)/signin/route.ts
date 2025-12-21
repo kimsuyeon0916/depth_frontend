@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { exchangeGoogleAuthCode } from '@/lib/o-auth/google'
 import { HttpErrorTypes } from '@/types/HttpError.types'
-import {
-  ACCESS_TOKEN_PATH,
-  ACCESS_TOKEN_MAX_AGE,
-  ACCESS_TOKEN_SAME_SITE,
-  REFRESH_TOKEN_PATH,
-  REFRESH_TOKEN_MAX_AGE,
-  REFRESH_TOKEN_SAME_SITE,
-} from '@/constants/token'
-import { IS_PROD } from '@/constants/env'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE
 
@@ -67,32 +58,14 @@ export async function POST(req: NextRequest) {
 
     const res = NextResponse.json({ success: true })
 
-    res.cookies.set('access_token', accessToken, {
-      httpOnly: true,
-      secure: IS_PROD,
-      sameSite: ACCESS_TOKEN_SAME_SITE,
-      path: ACCESS_TOKEN_PATH,
-      maxAge: ACCESS_TOKEN_MAX_AGE,
-    })
+    res.cookies.set('access_token', accessToken)
 
-    res.cookies.set('refresh_token', refreshToken, {
-      httpOnly: true,
-      secure: IS_PROD,
-      sameSite: REFRESH_TOKEN_SAME_SITE,
-      path: REFRESH_TOKEN_PATH,
-      maxAge: REFRESH_TOKEN_MAX_AGE,
-    })
+    res.cookies.set('refresh_token', refreshToken)
 
     const upstreamJson = await upstream.json()
 
     // TODO 권한 이거 이렇게 주니까 여기서 처리해야하는데 로직을 어떻게 할지 다시 생각 (리프레쉬랑 같게 공급)
-    res.cookies.set('role', upstreamJson.role, {
-      httpOnly: true,
-      secure: IS_PROD,
-      sameSite: REFRESH_TOKEN_SAME_SITE,
-      path: REFRESH_TOKEN_PATH,
-      maxAge: REFRESH_TOKEN_MAX_AGE,
-    })
+    res.cookies.set('role', upstreamJson.role)
 
     return res
   } catch (error) {
