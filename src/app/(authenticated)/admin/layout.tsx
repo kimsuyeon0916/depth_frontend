@@ -10,7 +10,7 @@ const TABS = [
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <AppShell location="content">
+    <AppShell location="post">
       <Main>
         <section className="w-full">
           <PageButton TABS={TABS} />
