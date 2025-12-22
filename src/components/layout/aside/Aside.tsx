@@ -1,11 +1,11 @@
-import Feed from "@/components/layout/aside/Feed";
-import Dashboard from './Dashboard';
+import Feed from '@/components/layout/aside/Feed'
+import Dashboard from './Dashboard'
 
 const Aside = () => {
   return (
-    <aside className="h-full min-w-72 sticky top-[100px]">
+    <aside className="sticky top-[89px] h-full min-w-72">
       <div className="space-y-5">
-        <Feed/>
+        <Feed />
         <Dashboard />
       </div>
     </aside>

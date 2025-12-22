@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   /*--foreground: #171717;*/
+  --header-h: 65px;
+  --container-max: 1400px;
+  --app-bg: #f9fafb;
+  --page-pb: 64px;
 }
 
 @theme inline {
