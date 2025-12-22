@@ -3,6 +3,7 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function PageButton({
   TABS,
@@ -10,6 +11,10 @@ export default function PageButton({
   TABS: { id: string; label: string; href?: string; onClick?: () => void }[]
 }) {
   const pathname = usePathname()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   return (
     <nav className="sticky top-20 flex h-[60px] items-end gap-2 bg-gray-50">
