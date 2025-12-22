@@ -1,18 +1,22 @@
 'use client'
 
 import clsx from 'clsx'
+import type { ReactNode } from 'react'
 import { Clock, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 
 type SortKey = 'popular' | 'latest'
-
 const SORT_PARAM = 'sort'
 const DEFAULT_SORT: SortKey = 'popular'
 
-const FEED_ITEMS: Array<{ id: SortKey; label: string; icon: React.ReactNode }> = [
-  { id: 'popular', label: '인기 게시글', icon: <TrendingUp size={16} /> },
-  { id: 'latest', label: '최신 게시글', icon: <Clock size={16} /> },
+const FEED_ITEMS: Array<{ id: SortKey; label: string; icon: ReactNode }> = [
+  {
+    id: 'popular',
+    label: '인기 게시글',
+    icon: <TrendingUp className="size-4" strokeWidth={1.5} />,
+  },
+  { id: 'latest', label: '최신 게시글', icon: <Clock className="size-4" strokeWidth={1.5} /> },
 ]
 
 export default function Feed() {
@@ -27,42 +31,48 @@ export default function Feed() {
   const makeHref = (nextSort: SortKey) => {
     const params = new URLSearchParams(searchParams.toString())
     params.set(SORT_PARAM, nextSort)
-
-    // TODO - 정렬 바꾸면 pagination 초기화 같은 거 필요하면 여기서 제거
-    // params.delete('page')
-
     const qs = params.toString()
     return qs ? `${pathname}?${qs}` : pathname
   }
 
   return (
-    <section className="w-full rounded-md border border-gray-200 bg-white p-4">
-      <div className="flex flex-col gap-1.5" role="tablist" aria-label="피드 정렬">
+    <section
+      className={clsx(
+        'w-full rounded-[10px] border border-[#E5E7EB] bg-white',
+        'px-[17px] py-[17px]',
+      )}
+    >
+      <div className="flex flex-col gap-[4px]" role="tablist" aria-label="피드 정렬">
         {FEED_ITEMS.map((item) => {
           const isActive = item.id === activeSort
 
           return (
             <Link
-              href={makeHref(item.id)}
               key={item.id}
+              href={makeHref(item.id)}
               role="tab"
               aria-selected={isActive}
               aria-current={isActive ? 'page' : undefined}
               className={clsx(
-                'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
-                isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50',
+                'flex h-[40px] items-center gap-[12px] rounded-[10px] pl-[12px]',
+                'text-[16px] leading-6 font-normal transition-colors',
+                isActive ? 'bg-[#EFF6FF] text-[#155DFC]' : 'text-[#364153] hover:bg-gray-50',
               )}
               scroll={false}
             >
+              {/* 아이콘은 16x16에 맞추기 */}
               <span
                 className={clsx(
-                  'flex size-6 items-center justify-center rounded-full',
-                  isActive ? 'bg-blue-50 text-blue-500' : 'bg-white text-gray-400',
+                  'flex size-4 items-center justify-center',
+                  isActive ? 'text-[#155DFC]' : 'text-[#364153]',
                 )}
+                aria-hidden
               >
                 {item.icon}
               </span>
-              <span className="leading-none">{item.label}</span>
+
+              {/* Figma 400 */}
+              <span className="font-normal">{item.label}</span>
             </Link>
           )
         })}
