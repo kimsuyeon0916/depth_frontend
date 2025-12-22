@@ -1,5 +1,5 @@
-import { PostFormValues } from '../types/PostCreateForm.types'
-import { TOPIC_TYPE } from '../types/Topic.types'
+import { TOPIC_TYPE } from '../../../../../types/Topic.types'
+import { PostFormValues } from '../../types/Post.types'
 
 export function validatePost(values: PostFormValues) {
   const fieldErrors: FormStateTypes<PostFormValues>['fieldErrors'] = {}

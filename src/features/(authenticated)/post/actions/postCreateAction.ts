@@ -2,15 +2,11 @@
 
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
-import type { PostFormValues } from '@/features/(authenticated)/post/create/types/PostCreateForm.types'
-import {
-  TOPIC_TYPE,
-  type TopicType,
-} from '@/features/(authenticated)/post/create/types/Topic.types'
-import { createPost } from '../../[id]/apis/post.api'
+import { TOPIC_TYPE, type TopicType } from '@/types/Topic.types'
 import { TABS } from '@/app/(authenticated)/(board)/layout'
-import { HighlightType } from '../../[id]/types/Post.types'
-import { validatePost } from '../utils/validatePost'
+import { HighlightType, PostFormValues } from '../types/Post.types'
+import { validatePost } from '../create/utils/validatePost'
+import { createPost } from '../apis/post.api'
 
 const HREF_BY_TOPIC = Object.fromEntries(
   TABS.filter((t) => t.id !== TOPIC_TYPE.ALL).map((t) => [t.id, t.href]),

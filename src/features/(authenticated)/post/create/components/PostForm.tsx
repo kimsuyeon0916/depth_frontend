@@ -7,13 +7,9 @@ import MarkdownEditor from '@/components/markdown/MarkdownEditor'
 import MarkdownViewer from '@/components/markdown/MarkdownViewer'
 import ErrorMessage from '@/components/ui/ErrorMessage'
 import Select from '@/components/ui/Select'
-import type { PostFormValues } from '@/features/(authenticated)/post/create/types/PostCreateForm.types'
-import {
-  TOPIC_LABEL,
-  TOPIC_TYPE,
-  type TopicType,
-} from '@/features/(authenticated)/post/create/types/Topic.types'
+import { TOPIC_LABEL, TOPIC_TYPE, type TopicType } from '@/types/Topic.types'
 import { useAuthState } from '@/app/hooks/useAuthState'
+import { PostFormValues } from '../../types/Post.types'
 
 export type PostFormMode = 'create' | 'edit'
 

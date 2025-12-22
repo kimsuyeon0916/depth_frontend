@@ -1,4 +1,4 @@
-import { createPostAction } from '@/features/(authenticated)/post/create/actions/postCreateAction'
+import { createPostAction } from '@/features/(authenticated)/post/actions/postCreateAction'
 import PostForm from '@/features/(authenticated)/post/create/components/PostForm'
 import type { Metadata } from 'next'
 

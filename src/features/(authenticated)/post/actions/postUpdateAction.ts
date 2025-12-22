@@ -2,12 +2,10 @@
 
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
-import type { PostFormValues } from '@/features/(authenticated)/post/create/types/PostCreateForm.types'
-import { type TopicType } from '@/features/(authenticated)/post/create/types/Topic.types'
-
-import { updatePost } from '../../[id]/apis/post.api'
-import { HighlightType } from '../../[id]/types/Post.types'
-import { validatePost } from '../utils/validatePost'
+import { type TopicType } from '@/types/Topic.types'
+import { HighlightType, PostFormValues } from '../types/Post.types'
+import { validatePost } from '../create/utils/validatePost'
+import { updatePost } from '../apis/post.api'
 
 export async function updatePostAction(
   _prevState: FormStateTypes<PostFormValues>,

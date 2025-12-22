@@ -1,15 +1,15 @@
 import MarkdownViewer from '@/components/markdown/MarkdownViewer'
 import { Avatar } from '@/components/ui/Avatar'
-import { Reaction } from '@/features/(authenticated)/post/[id]/components/Reaction'
-import { CommentSection } from '@/features/(authenticated)/post/[id]/components/CommentSection'
+import { Reaction } from '@/features/(authenticated)/post/components/Reaction'
+import { CommentSection } from '@/features/(authenticated)/post/components/CommentSection'
 import { toRelativeTimeLabel } from '@/utils/toRelativeTimeLabel'
-import { deletePost, getPostDetail } from '@/features/(authenticated)/post/[id]/apis/post.api'
 import { Pencil, Trash2 } from 'lucide-react'
-import { TOPIC_LABEL } from '@/features/(authenticated)/post/create/types/Topic.types'
+import { TOPIC_LABEL } from '@/types/Topic.types'
 import { getUser } from '@/features/(authenticated)/users/apis/user.api'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
+import { getPostDetail, deletePost } from '@/features/(authenticated)/post/apis/post.api'
 
 export default async function PostDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params
