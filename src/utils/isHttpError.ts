@@ -1,6 +1,7 @@
 import { HttpErrorTypes } from '@/types/HttpError.types'
 
 export const isHttpError = (e: unknown): e is HttpErrorTypes => {
+  console.log(e)
   if (e instanceof HttpErrorTypes) return true
 
   if (typeof e !== 'object' || e === null) return false

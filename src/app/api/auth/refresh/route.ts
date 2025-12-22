@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/token'
 
 type RefreshResponse = {
   accessToken: string
@@ -7,7 +8,7 @@ type RefreshResponse = {
 
 export async function GET(req: NextRequest) {
   const next = req.nextUrl.searchParams.get('next') ?? '/'
-  const refreshToken = req.cookies.get('refresh_token')?.value
+  const refreshToken = req.cookies.get(REFRESH_TOKEN)?.value
 
   if (!refreshToken) {
     return redirectToSigninAndClearCookies(req, next)
@@ -29,7 +30,7 @@ export async function GET(req: NextRequest) {
 
     const res = NextResponse.redirect(new URL(next, req.url))
 
-    res.cookies.set('access_token', data.accessToken)
+    res.cookies.set(ACCESS_TOKEN, data.accessToken)
 
     return res
   } catch {
@@ -39,7 +40,7 @@ export async function GET(req: NextRequest) {
 
 const redirectToSigninAndClearCookies = (req: NextRequest, next: string) => {
   const res = NextResponse.redirect(new URL(`/signin?next=${encodeURIComponent(next)}`, req.url))
-  res.cookies.delete('access_token')
-  res.cookies.delete('refresh_token')
+  res.cookies.delete(ACCESS_TOKEN)
+  res.cookies.delete(REFRESH_TOKEN)
   return res
 }

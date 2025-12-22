@@ -2,24 +2,21 @@
 
 import { useGoogleLogin } from '@react-oauth/google'
 import { useMutation } from '@tanstack/react-query'
-import { SigninTypes } from '@/features/(public)/signin/types/Signin.types'
 import { useRouter } from 'next/navigation'
 import { isHttpError } from '@/utils/isHttpError'
 import { usePendingStore } from '@/store/pendingStore'
-import { client } from '@/lib/api/client'
 import { USER_ERROR_CODE } from '@/constants/error-code/user'
 import { SigninErrorTypes } from '@/features/(public)/signin/types/SigninError.types'
+import { signinAction } from '@/features/(public)/signin/signinAction'
+import { HttpErrorTypes } from '@/types/HttpError.types'
 
 export function useGoogleSignin() {
   const router = useRouter()
   const signinMutation = useMutation({
     mutationFn: async (code: string) => {
-      const res = await client<SigninTypes, { code: string }>('/api/signin', {
-        method: 'POST',
-        body: { code },
-        cache: 'no-store',
-      })
-      return res
+      const r = await signinAction(code)
+      if (!r.ok) throw new HttpErrorTypes(r.status, r.error?.message, r.error)
+      return r
     },
     onSuccess: () => router.push('/'),
     onError: (error) => {
@@ -51,9 +48,7 @@ export function useGoogleSignin() {
     flow: 'auth-code',
     scope: 'openid profile email',
     onSuccess: ({ code }) => signinMutation.mutate(code),
-    onError: (err) => {
-      console.error('Google login failed', err)
-    },
+    onError: (err) => console.error('Google login failed', err),
   })
 
   return {
