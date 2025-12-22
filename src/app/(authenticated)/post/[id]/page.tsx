@@ -3,10 +3,12 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Reaction } from '@/features/(authenticated)/post/[id]/components/Reaction'
 import { CommentSection } from '@/features/(authenticated)/post/[id]/components/CommentSection'
 import { toRelativeTimeLabel } from '@/utils/toRelativeTimeLabel'
-import { getPostDetail } from '@/features/(authenticated)/post/[id]/apis/post.api'
+import { deletePost, getPostDetail } from '@/features/(authenticated)/post/[id]/apis/post.api'
 import { Pencil, Trash2 } from 'lucide-react'
 import { TOPIC_LABEL } from '@/features/(authenticated)/post/create/types/Topic.types'
 import { getUser } from '@/features/(authenticated)/users/apis/user.api'
+import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 export default async function PostDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params
@@ -15,6 +17,14 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
   const user = await getUser()
 
   const isOwner = post && user?.userId === post.writerId
+
+  async function deletePostAction() {
+    'use server'
+    await deletePost(id)
+    // TODO: 게시글 삭제 이후 어디로 리다이렉트 할 지 논의 필요
+    revalidatePath('/')
+    redirect('/')
+  }
 
   return (
     post && (
@@ -53,13 +63,15 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
                   <Pencil size={20} stroke="rgba(55,56,60,0.61)" aria-hidden />
                 </button>
 
-                <button
-                  type="button"
-                  aria-label="삭제"
-                  className="h-7 w-7 rounded-md px-1 pt-1 pb-0 focus:ring-1 focus:ring-[#155DFC]/30 focus:outline-none"
-                >
-                  <Trash2 size={20} stroke="rgba(55,56,60,0.61)" aria-hidden />
-                </button>
+                <form action={deletePostAction}>
+                  <button
+                    type="submit"
+                    aria-label="삭제"
+                    className="h-7 w-7 rounded-md px-1 pt-1 pb-0 focus:ring-1 focus:ring-[#155DFC]/30 focus:outline-none"
+                  >
+                    <Trash2 size={20} stroke="rgba(55,56,60,0.61)" aria-hidden />
+                  </button>
+                </form>
               </div>
             )}
           </header>
