@@ -14,7 +14,9 @@ export function ModalShell({
   returnTo?: string
 }) {
   const router = useRouter()
-  const close = () => (returnTo ? router.replace(returnTo) : router.back())
+  const close = useCallback(() => {
+    returnTo ? router.replace(returnTo) : router.back()
+  }, [router, returnTo])
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
