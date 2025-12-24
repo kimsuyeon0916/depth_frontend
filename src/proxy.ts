@@ -4,7 +4,7 @@ import { REFRESH_TOKEN } from '@/constants/token'
 
 // 로그인 없이 접근 허용할 경로들
 const PUBLIC_PATHS = ['/signin', '/signup']
-const DEFAULT_AFTER_LOGIN = '/job-tips'
+const DEFAULT_AFTER_LOGIN = '/'
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl

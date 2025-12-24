@@ -24,6 +24,7 @@ export async function server(endpoint: string, options: RequestInit = {}): Promi
       headers: h,
       body: options.body ?? undefined,
       cache: options.cache ?? 'no-store',
+      credentials: 'include',
     })
   }
 
