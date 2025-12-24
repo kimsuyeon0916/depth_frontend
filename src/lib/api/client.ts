@@ -1,12 +1,10 @@
 'use client'
 
-import { HttpErrorTypes } from '@/types/HttpError.types'
-
-export async function client<TRes, TBody = unknown>(
+export async function client(
   path: string,
   opts: {
     method: MethodTypes
-    body?: TBody
+    body?: unknown
     cache?: RequestCache
     baseUrl?: string
     credentials?: RequestCredentials
