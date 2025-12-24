@@ -35,7 +35,7 @@ export function useGoogleSignin() {
           router.push(`/signup?token=${encodeURIComponent(token)}`)
         } else {
           const sp = new URLSearchParams({
-            title: '유저 알림',
+            title: '유저 알림', //todo 성규님과 상의
             message: USER_ERROR_MESSAGE[USER_ERROR_CODE.USER_NOT_FOUND],
           })
           router.push(`/signin/message?${sp.toString()}`)
