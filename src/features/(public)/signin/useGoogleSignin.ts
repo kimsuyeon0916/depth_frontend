@@ -25,10 +25,7 @@ export function useGoogleSignin() {
       if (!res.ok) throw new HttpErrorTypes(res.status, data?.message ?? `HTTP ${res.status}`, data)
       return data
     },
-    onSuccess: () => {
-      console.log('Sign in success')
-      router.push('/')
-    },
+    onSuccess: () => router.push('/'),
     onError: (error) => {
       if (!isHttpError(error)) return
 

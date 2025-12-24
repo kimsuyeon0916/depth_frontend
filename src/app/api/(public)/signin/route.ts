@@ -65,7 +65,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(payload, { status: error.status })
     }
 
-    console.error('Unhandled error in /api/signin:', error)
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
   }
 }
