@@ -8,15 +8,15 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 type SortKey = 'popular' | 'latest'
 const SORT_PARAM = 'sort'
-const DEFAULT_SORT: SortKey = 'popular'
+const DEFAULT_SORT: SortKey = 'latest'
 
 const FEED_ITEMS: Array<{ id: SortKey; label: string; icon: ReactNode }> = [
+  { id: 'latest', label: '최신 게시글', icon: <Clock className="size-4" strokeWidth={1.5} /> },
   {
     id: 'popular',
     label: '인기 게시글',
     icon: <TrendingUp className="size-4" strokeWidth={1.5} />,
   },
-  { id: 'latest', label: '최신 게시글', icon: <Clock className="size-4" strokeWidth={1.5} /> },
 ]
 
 export default function Feed() {
