@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import Label from '@/components/ui/Label'
 
 type FormInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  label: string
+  label?: string
   errorMessage?: string
   name: string
   inputClassName?: string

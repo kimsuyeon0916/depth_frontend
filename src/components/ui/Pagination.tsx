@@ -3,16 +3,18 @@ import clsx from 'clsx'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function Pagination({
-  page,
-  size,
-  totalPages,
+  meta,
   searchParams,
+  pageKey = 'page',
+  sizeKey = 'size',
 }: {
-  page: number
-  size: number
-  totalPages: number
+  meta: PaginationTypes
   searchParams: Record<string, string | string[] | undefined>
+  pageKey?: string
+  sizeKey?: string
 }) {
+  const { currentPage, pageSize, totalPages, isFirst, isLast } = meta
+
   if (totalPages <= 1) return null
 
   const makeHref = (nextPage: number) => {
@@ -20,33 +22,41 @@ export default function Pagination({
 
     for (const [k, v] of Object.entries(searchParams)) {
       if (typeof v === 'string') sp.set(k, v)
+      else if (Array.isArray(v)) {
+        sp.delete(k)
+        v.forEach((vv) => sp.append(k, vv))
+      }
     }
 
-    sp.set('page', String(nextPage))
-    sp.set('size', String(size))
+    sp.set(pageKey, String(nextPage))
+    sp.set(sizeKey, String(pageSize))
     return `?${sp.toString()}`
   }
 
-  const current = page
-  const start = Math.max(0, current - 2)
-  const end = Math.min(totalPages - 1, current + 2)
+  const current = currentPage
+  const start = Math.max(1, current - 2)
+  const end = Math.min(totalPages, current + 2)
 
   const pages: number[] = []
-  for (let i = start; i <= end; i++) pages.push(i)
+  for (let p = start; p <= end; p++) pages.push(p)
+
+  const prevPage = Math.max(1, current - 1)
+  const nextPage = Math.min(totalPages, current + 1)
 
   return (
     <div className="flex items-center justify-between gap-3 px-6 py-4">
       <div className="text-sm text-gray-600">
-        페이지 <span className="font-semibold text-gray-900">{current + 1}</span> / {totalPages}
+        페이지 <span className="font-semibold text-gray-900">{current}</span> / {totalPages}
       </div>
 
       <div className="flex items-center gap-2">
+        {/* 전 */}
         <Link
-          href={makeHref(Math.max(0, current - 1))}
-          aria-disabled={current === 0}
+          href={makeHref(prevPage)}
+          aria-disabled={isFirst}
           className={clsx(
             'flex h-7 items-center justify-center rounded-md border px-2 text-sm font-medium',
-            current === 0
+            isFirst
               ? 'pointer-events-none border-gray-200 bg-gray-100 text-gray-400'
               : 'border-gray-200 bg-white text-gray-800 hover:bg-gray-50',
           )}
@@ -54,10 +64,10 @@ export default function Pagination({
           <ChevronLeft size={16} />
         </Link>
 
-        {start > 0 && (
+        {start > 1 && (
           <>
             <Link
-              href={makeHref(0)}
+              href={makeHref(1)}
               className="h-7 rounded-md border border-gray-200 bg-white px-3 text-sm font-medium text-gray-800 hover:bg-gray-50"
             >
               1
@@ -66,6 +76,7 @@ export default function Pagination({
           </>
         )}
 
+        {/* 버튼 생성 */}
         {pages.map((p) => {
           const active = p === current
           return (
@@ -79,17 +90,17 @@ export default function Pagination({
                   : 'border-gray-200 bg-white text-gray-800 hover:bg-gray-50',
               )}
             >
-              {p + 1}
+              {p}
             </Link>
           )
         })}
 
-        {end < totalPages - 1 && (
+        {end < totalPages && (
           <>
             <span className="px-1 text-gray-400">…</span>
             <Link
-              href={makeHref(totalPages - 1)}
-              className="h-9 rounded-md border border-gray-200 bg-white px-3 text-sm font-medium text-gray-800 hover:bg-gray-50"
+              href={makeHref(totalPages)}
+              className="h-7 rounded-md border border-gray-200 bg-white px-3 text-sm font-medium text-gray-800 hover:bg-gray-50"
             >
               {totalPages}
             </Link>
@@ -97,11 +108,11 @@ export default function Pagination({
         )}
 
         <Link
-          href={makeHref(Math.min(totalPages - 1, current + 1))}
-          aria-disabled={current >= totalPages - 1}
+          href={makeHref(nextPage)}
+          aria-disabled={isLast}
           className={clsx(
             'flex h-7 items-center justify-center rounded-md border px-2 text-sm font-medium',
-            current >= totalPages - 1
+            isLast
               ? 'pointer-events-none border-gray-200 bg-gray-100 text-gray-400'
               : 'border-gray-200 bg-white text-gray-800 hover:bg-gray-50',
           )}

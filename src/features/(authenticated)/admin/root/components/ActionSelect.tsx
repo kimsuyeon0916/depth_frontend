@@ -2,8 +2,8 @@
 
 import React from 'react'
 import Select from '@/components/ui/Select'
-import { useRoleStore } from '@/store/roleStore'
-import { UserRole } from '@/features/(authenticated)/admin/types/AdminPage.types'
+import { useRoleStore } from '@/store/role.store'
+import { UserRole } from '@/features/(authenticated)/admin/root/types/AdminPage.types'
 
 export default function ActionSelect({
   userId,

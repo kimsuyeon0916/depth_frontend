@@ -32,14 +32,5 @@ export type Pageable = {
 
 export type PageResponse<T> = {
   content: T[]
-  pageable: Pageable
-  last: boolean
-  totalElements: number
-  totalPages: number
-  size: number
-  number: number
-  sort: SortInfo
-  numberOfElements: number
-  first: boolean
-  empty: boolean
+  pageInfo: PaginationTypes
 }
