@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import PostCard from '@/components/PostCard'
 import type { TopicType } from '@/types/Topic.types'
 import { useGetPostsQuery } from '../queries/usePost'
+import { EmptyPost } from './EmptyPost'
 
 export function PostInfiniteList({ topic, size = 20 }: { topic?: TopicType; size?: number }) {
   const sentinelRef = useRef<HTMLDivElement | null>(null)
@@ -41,6 +42,8 @@ export function PostInfiniteList({ topic, size = 20 }: { topic?: TopicType; size
   if (isInitialLoading) return <p className="py-6 text-center">불러오는 중…</p>
   if (status === 'error')
     return <p className="py-6 text-center">에러: {(error as Error).message}</p>
+
+  if (isEmpty) return <EmptyPost />
 
   return (
     <>
