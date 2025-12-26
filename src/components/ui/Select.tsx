@@ -4,20 +4,20 @@ import React from 'react'
 import clsx from 'clsx'
 import { ChevronDown } from 'lucide-react'
 
-export type SelectOption<T extends string = string> = {
-  value: T | ''
+export type SelectOptions = {
+  value: string
   label: string
   disabled?: boolean
-}
+}[]
 
-type SelectProps<T extends string = string> = React.SelectHTMLAttributes<HTMLSelectElement> & {
+type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   name: string
-  options: ReadonlyArray<SelectOption<T>>
+  options: SelectOptions
   placeholder?: string
   wrapperClassName?: string
 }
 
-export default function Select<T extends string = string>({
+export default function Select({
   name,
   options,
   placeholder = '선택하세요',
@@ -25,7 +25,7 @@ export default function Select<T extends string = string>({
   className,
   wrapperClassName,
   ...rest
-}: SelectProps<T>) {
+}: SelectProps) {
   return (
     <div className={clsx('relative w-full', wrapperClassName)}>
       <select

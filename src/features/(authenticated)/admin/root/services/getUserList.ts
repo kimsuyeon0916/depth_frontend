@@ -1,10 +1,11 @@
-import { PageResponse, UserRow } from '@/features/(authenticated)/admin/types/AdminPage.types'
+import { PageResponse, UserRow } from '@/features/(authenticated)/admin/root/types/AdminPage.types'
 import { cookies } from 'next/headers'
 import { server } from '@/lib/api/server'
 
 export type GetUserListParams = {
   page: number
   size: number
+  trackId?: number
   sort?: string[]
   condition?: Partial<{
     q: string
@@ -21,6 +22,7 @@ export async function getUserList(params: GetUserListParams): Promise<PageRespon
   const sp = new URLSearchParams()
   sp.set('page', String(params.page))
   sp.set('size', String(params.size))
+  if (params.trackId) sp.set('trackId', String(params.trackId))
 
   for (const s of params.sort ?? []) sp.append('sort', s)
 

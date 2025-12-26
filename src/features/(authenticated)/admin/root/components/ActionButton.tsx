@@ -3,9 +3,12 @@
 import React from 'react'
 import Button, { ButtonVariant } from '@/components/ui/button/Button'
 import clsx from 'clsx'
-import { UserRequestStatus, UserRole } from '@/features/(authenticated)/admin/types/AdminPage.types'
-import { decisionUser } from '@/features/(authenticated)/admin/services/decisionUser'
-import { useRoleStore } from '@/store/roleStore'
+import {
+  UserRequestStatus,
+  UserRole,
+} from '@/features/(authenticated)/admin/root/types/AdminPage.types'
+import { decisionUser } from '@/features/(authenticated)/admin/root/services/decisionUser'
+import { useRoleStore } from '@/store/role.store'
 
 export default function ActionButton({
   userId,

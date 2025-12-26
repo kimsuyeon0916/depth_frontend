@@ -1,0 +1,1 @@
+type TrackStatus = 'ENROLLED' | 'GRADUATED'

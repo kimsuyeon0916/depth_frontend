@@ -1,6 +1,9 @@
 'use server'
 
-import { UserRequestStatus, UserRole } from '@/features/(authenticated)/admin/types/AdminPage.types'
+import {
+  UserRequestStatus,
+  UserRole,
+} from '@/features/(authenticated)/admin/root/types/AdminPage.types'
 import { safeJson, server } from '@/lib/api/server'
 
 type params = {

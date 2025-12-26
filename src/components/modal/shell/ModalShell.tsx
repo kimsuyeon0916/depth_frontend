@@ -15,7 +15,9 @@ export function ModalShell({
 }) {
   const router = useRouter()
   const close = useCallback(() => {
-    returnTo ? router.replace(returnTo) : router.back()
+    const to = returnTo ?? '/admin/0'
+    router.replace(to)
+    router.refresh()
   }, [router, returnTo])
 
   useEffect(() => {

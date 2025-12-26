@@ -3,7 +3,7 @@ import React from 'react'
 export default async function Main({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen bg-gray-50">
-      <div className="mx-auto flex min-h-screen max-w-7xl gap-5 px-5">{children}</div>
+      <div className="mx-auto flex min-h-[calc(100%-129px)] max-w-7xl gap-5 px-5">{children}</div>
     </main>
   )
 }

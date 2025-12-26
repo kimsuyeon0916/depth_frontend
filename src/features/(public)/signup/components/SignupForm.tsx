@@ -18,7 +18,15 @@ export const initialState: FormStateTypes<SignupFormTypes> = {
   success: false,
 }
 
-export default function SignupForm({ token, provider }: { token: string; provider: string }) {
+export default function SignupForm({
+  token,
+  provider,
+  selectTrack,
+}: {
+  token: string
+  provider: string
+  selectTrack: { label: string; value: string }[]
+}) {
   const [state, formAction, isPending] = useActionState<FormStateTypes<SignupFormTypes>, FormData>(
     signupAction,
     initialState,
@@ -51,6 +59,7 @@ export default function SignupForm({ token, provider }: { token: string; provide
       <FieldSelect
         label="과정 선택"
         name="track"
+        options={selectTrack}
         placeholder="현재 과정을 선택해주세요"
         inputClassName="h-10"
       />

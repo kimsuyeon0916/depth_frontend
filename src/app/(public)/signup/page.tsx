@@ -1,6 +1,7 @@
 import SignupForm from '@/features/(public)/signup/components/SignupForm'
 import { redirect } from 'next/navigation'
 import jwt from 'jsonwebtoken'
+import { getTrackList } from '@/features/(authenticated)/admin/track/services/getTrackList'
 
 type SearchParams = { [key: string]: string | string[] | undefined }
 
@@ -9,6 +10,14 @@ export default async function SignupPage(props: {
 }) {
   const searchParams = await props.searchParams
   const token = typeof searchParams.token === 'string' ? searchParams.token : ''
+  const trackData = await getTrackList()
+  const selectTrack =
+    trackData?.content?.length > 0
+      ? trackData.content.map((track) => ({
+          label: track.trackName,
+          value: String(track.trackId),
+        }))
+      : []
 
   // token 아예 없으면 차단
   if (!token || token.trim() === '') {
@@ -41,7 +50,7 @@ export default async function SignupPage(props: {
             입력해주세요.
           </p>
         </div>
-        <SignupForm token={token} provider="GOOGLE" />
+        <SignupForm token={token} provider="GOOGLE" selectTrack={selectTrack} />
 
         <p className="mx-auto mt-3 w-72 text-center text-xs leading-5 text-gray-400">
           회원가입을 진행하면 이용약관과 개인정보처리방침을 동의한 것으로 간주됩니다.
