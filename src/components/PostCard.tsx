@@ -16,7 +16,6 @@ export default function PostCard({ post }: PostCardProps) {
   const revalidatePathname = HREF_BY_TOPIC[post.topic as TopicType] ?? '/'
 
   async function handleToggleReaction(reactionType: ReactionType, reactedByMe: boolean) {
-    'use server'
     await toggleReactionAction({
       targetType: 'POST',
       targetId: post.postId,
