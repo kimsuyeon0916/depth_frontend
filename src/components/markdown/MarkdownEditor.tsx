@@ -1,31 +1,73 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import '@uiw/react-md-editor/markdown-editor.css'
 import dynamic from 'next/dynamic'
 import clsx from 'clsx'
+import { uploadImage } from '@/features/(authenticated)/post/apis/image.api'
+import {
+  ALLOWED_MIME_TYPES,
+  MAX_GIF_BYTES,
+  MAX_IMAGE_BYTES,
+} from '@/features/(authenticated)/post/constants/image'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 type MarkdownEditorProps = {
   name: string
+  draftId: string
   defaultValue?: string
   onChange?: (value: string) => void
 }
 
-async function uploadImageAndGetUrl(file: File): Promise<string> {
-  // TODO: 실제 업로드 로직으로 교체
-  return Promise.resolve(URL.createObjectURL(file))
+function formatImageUrl(res: { url: string; relativePath: string }) {
+  const url = res.url?.trim()
+  return `${url}`
 }
 
-const MarkdownEditor = ({ name, defaultValue = '', onChange }: MarkdownEditorProps) => {
+function formatBytes(bytes: number) {
+  const mb = bytes / 1024 / 1024
+  return `${mb.toFixed(mb >= 10 ? 0 : 1)}MB`
+}
+
+function validateImageFile(file: File) {
+  if (!ALLOWED_MIME_TYPES.has(file.type)) {
+    return `지원하지 않는 파일 형식이에요. (허용: jpg, png, gif, webp)`
+  }
+
+  const isGif = file.type === 'image/gif'
+  const limit = isGif ? MAX_GIF_BYTES : MAX_IMAGE_BYTES
+
+  if (file.size > limit) {
+    return `${isGif ? 'GIF' : '이미지'} 용량이 너무 커요. 최대 ${formatBytes(limit)}까지 업로드할 수 있어요. (현재: ${formatBytes(
+      file.size,
+    )})`
+  }
+
+  return null
+}
+
+export default function MarkdownEditor({
+  name,
+  draftId,
+  defaultValue = '',
+  onChange,
+}: MarkdownEditorProps) {
   const [value, setValue] = useState(defaultValue)
+  const valueRef = useRef(value)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const [focused, setFocused] = useState(false) // ★ 에디터 포커스 상태
+  const [focused, setFocused] = useState(false)
+  const [uploading, setUploading] = useState(false)
+
+  const accept = useMemo(() => 'image/jpeg,image/png,image/gif,image/webp', [])
 
   useEffect(() => {
     setValue(defaultValue)
   }, [defaultValue])
+
+  useEffect(() => {
+    valueRef.current = value
+  }, [value])
 
   const syncValue = (next: string) => {
     setValue(next)
@@ -33,11 +75,32 @@ const MarkdownEditor = ({ name, defaultValue = '', onChange }: MarkdownEditorPro
   }
 
   const handleUpload = async (file: File) => {
-    const url = await uploadImageAndGetUrl(file)
-    syncValue(`${value}\n\n![이미지 설명](${url})\n\n`)
+    if (!draftId) {
+      alert('draftId가 없어 이미지 업로드를 할 수 없습니다.')
+      return
+    }
+
+    const msg = validateImageFile(file)
+    if (msg) {
+      alert(msg)
+      return
+    }
+
+    setUploading(true)
+    try {
+      const res = await uploadImage({ file, draftId })
+      if (!res) throw new Error('이미지 업로드 응답이 비어있습니다.')
+
+      const imageUrl = formatImageUrl(res)
+      const next = `${valueRef.current}\n\n![이미지 설명](${imageUrl})\n\n`
+      syncValue(next)
+    } catch (e) {
+      alert(e instanceof Error ? e.message : '이미지 업로드에 실패했습니다.')
+    } finally {
+      setUploading(false)
+    }
   }
 
-  // 플레이스홀더로 보여줄 기본 텍스트
   const placeholder = [
     '내용을 입력하세요',
     '',
@@ -59,7 +122,7 @@ const MarkdownEditor = ({ name, defaultValue = '', onChange }: MarkdownEditorPro
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept={accept}
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0]
@@ -94,13 +157,12 @@ const MarkdownEditor = ({ name, defaultValue = '', onChange }: MarkdownEditorPro
             '[&_.w-md-editor-toolbar]:!mb-2.5',
             '[&_.w-md-editor-text-input]:!h-full',
             '[&_.w-md-editor-toolbar]:!border-b',
-
             '[&_.w-md-editor-area]:!min-h-full',
             '[&_.w-md-editor-input]:!min-h-full',
-
             '[&_.w-md-editor-text-input]:!h-full',
             '[&_.w-md-editor-text]:!h-full',
             '[&_.w-md-editor-text-input]:!resize-none',
+            uploading && 'pointer-events-none opacity-70',
           )}
           commandsFilter={(cmd) => {
             const allowed = ['bold', 'italic', 'quote', 'code', 'image', 'link']
@@ -121,5 +183,3 @@ const MarkdownEditor = ({ name, defaultValue = '', onChange }: MarkdownEditorPro
     </>
   )
 }
-
-export default MarkdownEditor
