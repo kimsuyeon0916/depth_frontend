@@ -3,9 +3,9 @@
 import React, { useState, useTransition } from 'react'
 import { SquarePen } from 'lucide-react'
 import Button from '@/components/ui/button/Button'
-import FieldSelect from '@/components/form/FieldSelect'
 import { updateTrackAction } from '@/features/(authenticated)/admin/track/actions/updateTrack'
 import { useRouter } from 'next/navigation'
+import Select from '@/components/ui/Select'
 
 export default function TrackStatusUpdateButton({
   trackStatus,
@@ -56,13 +56,13 @@ export default function TrackStatusUpdateButton({
 
       {isUpdate && (
         <div className="absolute inset-0 z-10 flex items-center gap-2 rounded-md bg-white px-4">
-          <FieldSelect
+          <Select
             name="trackStatus"
             id={`trackStatus-${trackId}`}
             required
             value={status}
             onChange={(e) => setStatus((e.target as HTMLSelectElement).value as TrackStatus)}
-            inputClassName="h-9 text-sm"
+            className="h-9 text-sm"
             options={[
               { label: 'ENROLLED', value: 'ENROLLED' },
               { label: 'GRADUATED', value: 'GRADUATED' },

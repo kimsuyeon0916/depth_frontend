@@ -3,9 +3,9 @@
 import React, { useState, useTransition } from 'react'
 import { SquarePen } from 'lucide-react'
 import Button from '@/components/ui/button/Button'
-import FieldInput from '@/components/form/FieldInput'
 import { updateTrackAction } from '@/features/(authenticated)/admin/track/actions/updateTrack'
 import { useRouter } from 'next/navigation'
+import Input from '@/components/ui/Input'
 
 const toDateInput = (v: string | Date | null | undefined) => {
   if (!v) return ''
@@ -67,24 +67,24 @@ export default function TrackDateUpdateButton({
 
       {isUpdate && (
         <div className="absolute inset-0 z-10 flex items-center gap-2 rounded-md bg-white px-4">
-          <FieldInput
+          <Input
             type="date"
             name="startDate"
             id={`startDate-${trackId}`}
             required
             value={sd}
             onChange={(e) => setSd((e.target as HTMLInputElement).value)}
-            inputClassName="h-9 text-sm"
+            className="h-9 text-sm"
           />
 
-          <FieldInput
+          <Input
             type="date"
             name="endDate"
             id={`endDate-${trackId}`}
             required
             value={ed}
             onChange={(e) => setEd((e.target as HTMLInputElement).value)}
-            inputClassName="h-9 text-sm"
+            className="h-9 text-sm"
           />
 
           <div className="ml-auto flex justify-end gap-2">

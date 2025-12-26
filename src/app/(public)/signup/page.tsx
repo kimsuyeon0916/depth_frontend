@@ -11,10 +11,13 @@ export default async function SignupPage(props: {
   const searchParams = await props.searchParams
   const token = typeof searchParams.token === 'string' ? searchParams.token : ''
   const trackData = await getTrackList()
-  const selectTrack = trackData.content.map((track) => ({
-    label: track.trackName,
-    value: String(track.trackId),
-  }))
+  const selectTrack =
+    trackData?.content?.length > 0
+      ? trackData.content.map((track) => ({
+          label: track.trackName,
+          value: String(track.trackId),
+        }))
+      : []
 
   // token 아예 없으면 차단
   if (!token || token.trim() === '') {

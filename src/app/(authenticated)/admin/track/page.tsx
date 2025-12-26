@@ -5,6 +5,7 @@ import TrackNameUpdateButton from '@/features/(authenticated)/admin/track/compon
 import TrackDateUpdateButton from '@/features/(authenticated)/admin/track/components/TrackDateUpdateButton'
 import TrackStatusUpdateButton from '@/features/(authenticated)/admin/track/components/TrackStatusUpdateButton'
 
+// TODO: 트랙 생성 페이지 디자인 수정 필요
 export default async function TrackPage() {
   const trackData = await getTrackList()
 

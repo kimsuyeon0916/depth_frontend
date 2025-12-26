@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react'
 
 export type SelectOptions = {
   value: string
-  label: React.ReactNode
+  label: string
   disabled?: boolean
 }[]
 

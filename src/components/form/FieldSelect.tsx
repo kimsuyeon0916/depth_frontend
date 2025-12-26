@@ -6,7 +6,7 @@ import Label from '@/components/ui/Label'
 import Select, { SelectOptions } from '@/components/ui/Select'
 
 type FormSelectProps = React.InputHTMLAttributes<HTMLSelectElement> & {
-  label?: string
+  label: string
   errorMessage?: string
   name: string
   inputClassName?: string
