@@ -8,7 +8,7 @@ import FieldSelect from '@/components/form/FieldSelect'
 import Button from '@/components/ui/button/Button'
 import { createTrackAction } from '@/features/(authenticated)/admin/track/actions/createTrack'
 import { updateTrackAction } from '@/features/(authenticated)/admin/track/actions/updateTrack'
-import { useTrackButtonStore } from '@/store/trackButton.store'
+import { TrackFields, useTrackButtonStore } from '@/store/trackButton.store'
 
 export const initialState = (
   trackName?: string,
@@ -37,7 +37,7 @@ function toDateValue(v?: string | Date) {
   return v.length >= 10 ? v.slice(0, 10) : v
 }
 
-export default function TrackFiled() {
+export default function TrackFiled({ selectedTabData }: { selectedTabData: TrackFields }) {
   const pathname = usePathname()
   const { trackName, trackStatus, trackId, endDate, startDate } = useTrackButtonStore()
 
@@ -49,11 +49,11 @@ export default function TrackFiled() {
     <TrackFormInner
       key={formKey}
       pathname={pathname}
-      trackId={trackId}
-      trackName={trackName}
-      startDate={startDate}
-      endDate={endDate}
-      trackStatus={trackStatus}
+      trackId={trackId ?? selectedTabData.trackId}
+      trackName={trackName ?? selectedTabData.trackName}
+      startDate={startDate ?? selectedTabData.startDate}
+      endDate={endDate ?? selectedTabData.endDate}
+      trackStatus={trackStatus ?? selectedTabData.trackStatus}
     />
   )
 }
@@ -67,7 +67,7 @@ function TrackFormInner({
   trackStatus,
 }: {
   pathname: string
-  trackId?: number
+  trackId?: number | string
   trackName?: string
   startDate?: string | Date
   endDate?: string | Date
