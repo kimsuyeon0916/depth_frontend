@@ -9,18 +9,16 @@ export default async function PostEditPage({ params }: { params: Promise<{ id: s
   const post = await getPostDetail(postId)
 
   return (
-    <main className="min-h-screen w-full bg-[#F9FAFB]">
-      <PostForm
-        mode="edit"
-        action={updatePostAction}
-        postId={postId}
-        initialValues={{
-          topic: post.topic,
-          title: post.title,
-          content: post.content,
-        }}
-        formKey={postId}
-      />
-    </main>
+    <PostForm
+      mode="edit"
+      action={updatePostAction}
+      postId={postId}
+      initialValues={{
+        topic: post.topic,
+        title: post.title,
+        content: post.content,
+      }}
+      formKey={postId}
+    />
   )
 }
