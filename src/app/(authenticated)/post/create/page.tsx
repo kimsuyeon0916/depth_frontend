@@ -9,12 +9,10 @@ export const metadata: Metadata = {
 
 export default function PostCreatePage() {
   return (
-    <main className="min-h-screen w-full bg-[#F9FAFB]">
-      <PostForm
-        mode="create"
-        action={createPostAction}
-        initialValues={{ topic: 'EMPLOYMENT_TIP', title: '', content: '' }}
-      />
-    </main>
+    <PostForm
+      mode="create"
+      action={createPostAction}
+      initialValues={{ topic: 'EMPLOYMENT_TIP', title: '', content: '' }}
+    />
   )
 }

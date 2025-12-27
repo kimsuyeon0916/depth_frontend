@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
-import { Send } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Send, X } from 'lucide-react'
 import type { Comment } from '../types/Comment.types'
 import {
   useCreateCommentMutation,
@@ -11,6 +11,11 @@ import {
 } from '../queries/useComment'
 import { CommentItem } from './CommentItem'
 import { useCommentSectionState } from '../hooks/useCommentSectionState'
+
+type MobileComposerState =
+  | { mode: 'create' }
+  | { mode: 'reply'; parentId: number; writerName?: string }
+  | { mode: 'edit'; commentId: number; writerName?: string; initialText: string }
 
 export function CommentSection({
   postId,
@@ -26,7 +31,7 @@ export function CommentSection({
   const { data: comments = { contents: [], hasNext: false, nexPage: null } } =
     useGetCommentsQuery(postId)
 
-  const totalCount = useMemo(() => countAll(comments.contents), [comments])
+  const totalCount = useMemo(() => countAll(comments.contents), [comments.contents])
 
   const createMut = useCreateCommentMutation(postId)
   const updateMut = useUpdateCommentMutation(postId)
@@ -34,8 +39,6 @@ export function CommentSection({
 
   const { commentText, setCommentText, resetCommentText, setActions, clearActions } =
     useCommentSectionState(postId)
-
-  const canSubmit = commentText.trim().length > 0
 
   const actions = useMemo(
     () => ({
@@ -54,23 +57,109 @@ export function CommentSection({
     return () => clearActions()
   }, [actions, setActions, clearActions])
 
+  const mobileInputRef = useRef<HTMLTextAreaElement | null>(null)
+  const [composer, setComposer] = useState<MobileComposerState>({ mode: 'create' })
+  const [mobileText, setMobileText] = useState('')
+
+  const isMobileSubmitting = createMut.isPending || updateMut.isPending
+  const mobileCanSubmit = mobileText.trim().length > 0
+
+  const openMobileCreate = () => {
+    setComposer({ mode: 'create' })
+    setMobileText('')
+    queueMicrotask(() => mobileInputRef.current?.focus())
+  }
+
+  const openMobileReply = (parentId: number, writerName?: string) => {
+    setComposer({ mode: 'reply', parentId, writerName })
+    setMobileText('')
+    queueMicrotask(() => mobileInputRef.current?.focus())
+  }
+
+  const openMobileEdit = (
+    commentId: number,
+    writerName: string | undefined,
+    initialText: string,
+  ) => {
+    setComposer({ mode: 'edit', commentId, writerName, initialText })
+    setMobileText(initialText ?? '')
+    queueMicrotask(() => mobileInputRef.current?.focus())
+  }
+
+  const cancelMobileMode = () => {
+    setComposer({ mode: 'create' })
+    setMobileText('')
+  }
+
+  const submitMobile = async () => {
+    if (!mobileCanSubmit || isMobileSubmitting) return
+
+    const content = mobileText.trim()
+
+    if (composer.mode === 'edit') {
+      await actions.onUpdate({ commentId: composer.commentId, content })
+      cancelMobileMode()
+      return
+    }
+
+    const parentId = composer.mode === 'reply' ? composer.parentId : null
+    await actions.onCreate({ parentId, content })
+    cancelMobileMode()
+  }
+
+  const canSubmitDesktopRoot = commentText.trim().length > 0
+
+  async function submitDesktopRootComment() {
+    if (!canSubmitDesktopRoot || createMut.isPending) return
+    await actions.onCreate({ parentId: null, content: commentText.trim() })
+    resetCommentText()
+  }
+
+  const mobileBannerText =
+    composer.mode === 'reply'
+      ? composer.writerName
+        ? `${composer.writerName}님에게 답글`
+        : '답글 작성 중'
+      : composer.mode === 'edit'
+        ? '댓글 수정 중'
+        : null
+
+  const mobilePlaceholder =
+    composer.mode === 'reply'
+      ? '답글을 입력하세요...'
+      : composer.mode === 'edit'
+        ? '수정 내용을 입력하세요...'
+        : '댓글을 입력하세요...'
+
+  const mobileSubmitAria =
+    composer.mode === 'reply' ? '답글 작성' : composer.mode === 'edit' ? '댓글 수정' : '댓글 작성'
+
   return (
-    <section aria-label="댓글" className="flex flex-col gap-4">
-      <h2 className="text-[24px] leading-[36px] font-normal text-[#101828]">댓글 {totalCount}</h2>
+    <section aria-label="댓글" className={['flex flex-col gap-4'].join(' ')}>
+      <h2 className="text-[16px] leading-[24px] font-normal text-[#101828] lg:text-[24px] lg:leading-[36px]">
+        댓글 {totalCount}
+      </h2>
 
       <ol className="flex flex-col gap-6">
         {comments.contents.map((c) => (
-          <CommentItem key={c.commentId} postId={postId} comment={c} depth={0} />
+          <CommentItem
+            key={c.commentId}
+            postId={postId}
+            comment={c}
+            depth={0}
+            onMobileReply={(parentId, writerName) => openMobileReply(parentId, writerName)}
+            onMobileEdit={(commentId, writerName, initialText) =>
+              openMobileEdit(commentId, writerName, initialText)
+            }
+          />
         ))}
       </ol>
 
       <form
-        className="flex flex-col items-end gap-3"
+        className="hidden flex-col items-end gap-3 lg:flex"
         onSubmit={async (e) => {
           e.preventDefault()
-          if (!canSubmit || createMut.isPending) return
-          await actions.onCreate({ parentId: null, content: commentText.trim() })
-          resetCommentText()
+          await submitDesktopRootComment()
         }}
       >
         <label className="sr-only" htmlFor={`comment-${postId}`}>
@@ -98,11 +187,71 @@ export function CommentSection({
 
           <button
             type="submit"
-            disabled={!canSubmit || createMut.isPending}
+            disabled={!canSubmitDesktopRoot || createMut.isPending}
             className="inline-flex h-9 w-[108px] items-center justify-center gap-2 rounded-lg bg-[#155DFC] text-[14px] leading-[20px] font-medium text-white disabled:opacity-50"
           >
             <Send size={16} />
             댓글 작성
+          </button>
+        </div>
+      </form>
+
+      <form
+        className={[
+          'fixed inset-x-0 bottom-0 z-30 lg:hidden',
+          'border-t border-[#E5E7EB] bg-white',
+          'px-4 pt-[17px] pb-[calc(16px+env(safe-area-inset-bottom))]',
+        ].join(' ')}
+        onSubmit={async (e) => {
+          e.preventDefault()
+          await submitMobile()
+        }}
+      >
+        {mobileBannerText && (
+          <div className="mb-2 flex items-center justify-between rounded-[10px] bg-[#F3F4F5] px-3 py-2">
+            <p className="text-[14px] leading-[20px] text-[#364153]">{mobileBannerText}</p>
+            <button
+              type="button"
+              onClick={cancelMobileMode}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-md"
+              aria-label="모드 취소"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
+        <div className="flex items-center gap-2">
+          <textarea
+            ref={mobileInputRef}
+            value={mobileText}
+            onChange={(e) => setMobileText(e.target.value)}
+            maxLength={2000}
+            rows={1}
+            className={[
+              'flex-1 resize-none',
+              'h-11',
+              'rounded-[8px] bg-[#F3F3F5]',
+              'px-3 py-2',
+              'text-[16px] leading-[24px] text-[#171719]',
+              'focus:ring-1 focus:ring-[#155DFC]/30 focus:outline-none',
+              'overflow-y-auto',
+              isMobileSubmitting ? 'opacity-70' : '',
+            ].join(' ')}
+            placeholder={mobilePlaceholder}
+          />
+
+          <button
+            type="submit"
+            disabled={!mobileCanSubmit || isMobileSubmitting}
+            className={[
+              'flex h-9 w-10 items-center justify-center rounded-[8px]',
+              mobileCanSubmit && !isMobileSubmitting ? 'bg-[#030213]' : 'bg-[#030213]/50',
+              'text-white',
+            ].join(' ')}
+            aria-label={mobileSubmitAria}
+          >
+            <Send size={16} />
           </button>
         </div>
       </form>

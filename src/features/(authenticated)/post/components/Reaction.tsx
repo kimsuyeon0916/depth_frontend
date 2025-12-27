@@ -10,10 +10,12 @@ export function Reaction({
   reactions = [],
   onToggle,
   invalidatePostList = true,
+  showTotal = true,
 }: {
   reactions?: Reaction[]
   onToggle?: (reactionType: ReactionType, reactedByMe: boolean) => Promise<void> | void
   invalidatePostList?: boolean
+  showTotal?: boolean
 }) {
   const qc = useQueryClient()
 
@@ -87,9 +89,11 @@ export function Reaction({
         ))}
       </ul>
 
-      <p className="text-[14px] leading-[20px] text-[rgba(55,56,60,0.61)]">
-        {totalReactions} reactions
-      </p>
+      {showTotal && (
+        <p className="text-[14px] leading-[20px] text-[rgba(55,56,60,0.61)]">
+          {totalReactions} reactions
+        </p>
+      )}
     </section>
   )
 }
