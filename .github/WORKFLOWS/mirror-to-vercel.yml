@@ -1,0 +1,40 @@
+name: Mirror to Vercel (org → personal)
+
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror branch to personal repo
+        env:
+          GH_TOKEN: ${{ secrets.ACCESS_KEY }}
+          DEST_REPO: kimsuyeon0916/depth_frontend
+          BOT_EMAIL: ${{ secrets.EMAIL }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -e
+
+          test -n "${GH_TOKEN}" || (echo "Missing ACCESS_KEY" && exit 1)
+          test -n "${BOT_EMAIL}" || (echo "Missing EMAIL" && exit 1)
+
+          echo "Mirroring ${BRANCH} -> ${DEST_REPO}:${BRANCH}"
+
+          git config user.name "vercel-mirror-bot"
+          git config user.email "${BOT_EMAIL}"
+
+          git remote remove personal 2>/dev/null || true
+          git remote add personal "https://x-access-token:${GH_TOKEN}@github.com/${DEST_REPO}.git"
+
+          git push personal "HEAD:refs/heads/${BRANCH}" --force-with-lease
