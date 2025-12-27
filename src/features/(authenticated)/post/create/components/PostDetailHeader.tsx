@@ -11,17 +11,17 @@ export function PostDetailHeader({
   fallbackHref = '/',
   postId,
   isOwner = false,
-  deleteAction,
+  deletePostAction,
 }: {
   title?: string
   fallbackHref?: string
   postId?: number
   isOwner?: boolean
-  deleteAction?: DeleteAction
+  deletePostAction?: DeleteAction
 }) {
   const router = useRouter()
 
-  const goBack = () => {
+  const handleGoBack = () => {
     if (typeof window !== 'undefined' && window.history.length > 1) {
       router.back()
       return
@@ -37,7 +37,7 @@ export function PostDetailHeader({
     <header className="fixed inset-x-0 top-0 z-30 h-(--header-h) border-b border-[#E5E7EB] bg-white">
       <div className="mx-auto flex h-full w-full max-w-(--container-max) items-center px-4">
         {/* 좌측: 뒤로 */}
-        <button type="button" onClick={goBack} className={btnBase} aria-label="뒤로가기">
+        <button type="button" onClick={handleGoBack} className={btnBase} aria-label="뒤로가기">
           <ArrowLeft size={16} className="text-[#0A0A0A]" />
         </button>
 
@@ -58,29 +58,17 @@ export function PostDetailHeader({
                 <Pencil size={20} className={iconBase} />
               </Link>
 
-              {deleteAction ? (
-                <form action={deleteAction}>
+              {deletePostAction && (
+                <form action={deletePostAction}>
                   <button
                     type="submit"
                     aria-label="삭제"
                     className={`${btnBase} group hover:bg-[#FEF2F2]`}
-                    onClick={(e) => {
-                      const ok = window.confirm('게시글을 삭제할까요?')
-                      if (!ok) e.preventDefault()
-                    }}
+                    // TODO: 삭제 토스트 추가
                   >
                     <Trash2 size={20} className={`${iconBase} group-hover:text-[#E7000B]`} />
                   </button>
                 </form>
-              ) : (
-                <button
-                  type="button"
-                  aria-label="삭제"
-                  className={`${btnBase} group hover:bg-[#FEF2F2]`}
-                  onClick={() => alert('삭제 액션이 연결되지 않았습니다.')}
-                >
-                  <Trash2 size={20} className={`${iconBase} group-hover:text-[#E7000B]`} />
-                </button>
               )}
             </>
           ) : (
