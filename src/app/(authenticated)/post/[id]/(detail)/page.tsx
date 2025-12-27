@@ -17,7 +17,7 @@ import { toggleReactionAction } from '@/features/(authenticated)/post/actions/to
 export default async function PostDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params
 
-  const post = await getPostDetail(id).catch(() => mockPost)
+  const post = await getPostDetail(id)
   const user = await getUser()
 
   const isOwner = post && user?.userId === post.writerId
@@ -118,33 +118,3 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
     )
   )
 }
-
-export const mockPost = {
-  writerId: 1,
-  writerName: '김개발',
-  topic: 'EMPLOYMENT_TIP',
-  title: '주니어 개발자를 위한 포트폴리오 작성 가이드',
-  tags: ['취업', '포트폴리오', '주니어'],
-  wroteAt: '2025-12-18T00:00:00.000Z',
-  createdAtLabel: toRelativeTimeLabel('2025-12-18T00:00:00.000Z'),
-  content: `안녕하세요! 주니어 개발자 취업 준비를 하면서 알게 된 포트폴리오 작성 팁을 공유합니다.
-
-# 1. h1
-실무에서 사용되는 기술 스택을 활용한 프로젝트를 최소 2-3개 준비하는 것이 좋습니다. 단순 클론 코딩보다는 자신만의 아이디어를 추가하는 것이 중요합니다.
-
-## 2. h2
-- 프로젝트 개요 및 목적
-- 주요 기능 및 스크린샷
-- 기술 스택 및 선택 이유
-- 트러블슈팅 경험
-- 성능 개선 사례
-
-### 3. h3
-- 일관된 코딩 컨벤션
-- 적절한 주석
-- 컴포넌트 분리
-- 에러 핸들링
-
-실제로 이 방법으로 포트폴리오를 정리한 후 서류 합격률이 30%에서 70%로 상승했습니다.
-`,
-} as const
