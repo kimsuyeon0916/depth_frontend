@@ -4,13 +4,14 @@ import Link from 'next/link'
 import { Loader2, Plus, X } from 'lucide-react'
 import { deleteTrack } from '@/features/(authenticated)/admin/track/actions/deleteTrack'
 import clsx from 'clsx'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useTransition } from 'react'
 import { TrackFields, useTrackButtonStore } from '@/store/trackButton.store'
-import TrackFiled from '@/features/(authenticated)/admin/root/components/TrackFiled'
+import TrackFiled from '@/features/(authenticated)/admin/root/components/track/TrackFiled'
 
 export default function AdminPageButton({ tabs }: { tabs: TrackFields[] }) {
   const pathname = usePathname()
+  const router = useRouter()
   const [deleteIsPending, startTransition] = useTransition()
   const { setField, reset } = useTrackButtonStore()
   const selectedTabData = tabs.find((t) => {
@@ -56,6 +57,7 @@ export default function AdminPageButton({ tabs }: { tabs: TrackFields[] }) {
                       startTransition(async () => {
                         try {
                           await deleteTrack(tab.trackId as number)
+                          router.push(`/admin/operator`)
                         } catch (e) {
                           alert(e instanceof Error ? e.message : '삭제 실패')
                         }
