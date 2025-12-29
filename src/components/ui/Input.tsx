@@ -41,7 +41,7 @@ export default function Input({ icon, ...props }: BaseInputProps) {
             el?.showPicker?.()
             el?.focus()
           }}
-          className="group absolute inset-y-0 right-2 flex items-center"
+          className="group absolute inset-0 right-2 flex items-center justify-end"
         >
           <span className="flex size-8 items-center justify-center rounded-md transition-colors group-hover:bg-gray-100">
             <Calendar className="size-5" />
