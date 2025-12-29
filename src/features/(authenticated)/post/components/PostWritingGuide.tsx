@@ -8,14 +8,18 @@ const GUIDE_ITEMS = [
 
 export default function PostWritingGuide() {
   return (
-    <section className="w-full rounded-[10px] bg-[#EFF6FF] p-4">
-      <h3 className="text-[18px] leading-[27px] font-medium text-[#1C398E]">✍️ 작성 가이드</h3>
+    <section className="w-full rounded-[10px] bg-[#EFF6FF] px-4 py-3 md:p-4">
+      <h3 className="text-[14px] leading-[27px] font-medium text-[#1C398E] md:text-[18px]">
+        ✍️ 작성 가이드
+      </h3>
 
-      <ul className="mt-2 flex flex-col gap-1">
+      <ul className="mt-2 flex flex-col gap-[2px] md:gap-1">
         {GUIDE_ITEMS.map((text) => (
           <li key={text} className="flex items-start gap-2">
-            <span className="text-[16px] leading-[24px] text-[#193CB8]">•</span>
-            <span className="text-[16px] leading-[24px] text-[#193CB8]">{text}</span>
+            <span className="shrink-0 text-[12px] leading-[24px] text-[#193CB8] md:text-[16px]">
+              •
+            </span>
+            <span className="text-[12px] leading-[24px] text-[#193CB8] md:text-[16px]">{text}</span>
           </li>
         ))}
       </ul>
