@@ -45,6 +45,11 @@ export async function server(endpoint: string, options: RequestInit = {}): Promi
     res.headers.append('set-cookie', sc)
   }
 
+  // 쿠키 정리 후 로그인으로 복귀(SSR/페이지 크래시 및 리다이렉트 루프를 최소화)
+  if (res.status === 401 || res.status === 403) {
+    redirect('/api/auth/logout?next=/signin')
+  }
+
   return res
 }
 
