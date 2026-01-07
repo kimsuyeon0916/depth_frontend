@@ -39,7 +39,6 @@ export function CommentItem({
     resetEditText,
   } = useCommentItemState(postId, comment.commentId)
 
-  // ✅ 중복 제출 방지 락(대댓글/수정 폼 각각)
   const replySubmitLockRef = useRef(false)
   const editSubmitLockRef = useRef(false)
 
