@@ -5,7 +5,7 @@ import { X } from 'lucide-react'
 
 const STORAGE_KEY = 'feedbackToastDismissed'
 
-export default function FeedBackButton() {
+export function FeedbackToast() {
   const [open, setOpen] = React.useState(false)
 
   React.useEffect(() => {

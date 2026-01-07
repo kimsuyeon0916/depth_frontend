@@ -6,7 +6,7 @@ import AppShell from '@/components/layout/header/AppShell'
 import CategoryFilter from '@/components/layout/CategoryFilter'
 import FloatingNav from '@/components/layout/FloatingNav'
 import { TABS } from '@/features/(authenticated)/post/constants/tabs'
-import FeedBackButton from '@/components/ui/FeedBackButton'
+import { FeedbackToast } from '@/components/ui/FeedbackToast'
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -22,7 +22,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
         <FloatingNav />
       </Main>
-      <FeedBackButton />
+      <FeedbackToast />
     </AppShell>
   )
 }
