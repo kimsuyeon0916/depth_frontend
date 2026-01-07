@@ -3,9 +3,22 @@
 import React from 'react'
 import { X } from 'lucide-react'
 
+const STORAGE_KEY = 'feedbackToastDismissed'
+
 export default function FeedBackButton() {
-  const [state, setState] = React.useState(true)
-  if (!state) return null
+  const [open, setOpen] = React.useState(false)
+
+  React.useEffect(() => {
+    const dismissed = sessionStorage.getItem(STORAGE_KEY) === '1'
+    setOpen(!dismissed)
+  }, [])
+
+  const handleClose = () => {
+    sessionStorage.setItem(STORAGE_KEY, '1')
+    setOpen(false)
+  }
+
+  if (!open) return null
 
   return (
     <div
@@ -28,7 +41,7 @@ export default function FeedBackButton() {
 
       <button
         type="button"
-        onClick={() => setState(false)}
+        onClick={handleClose}
         className="inline-flex h-4 w-4 shrink-0 items-center justify-center"
         aria-label="닫기"
       >
