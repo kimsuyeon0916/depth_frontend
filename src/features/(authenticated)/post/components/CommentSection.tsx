@@ -64,7 +64,6 @@ export function CommentSection({
   const isMobileSubmitting = createMut.isPending || updateMut.isPending
   const mobileCanSubmit = mobileText.trim().length > 0
 
-  // submit 중복 방지 락 (이벤트 레벨에서 선점)
   const desktopSubmitLockRef = useRef(false)
   const mobileSubmitLockRef = useRef(false)
 
