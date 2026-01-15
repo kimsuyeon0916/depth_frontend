@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     cache: 'no-store',
     headers: {
       accept: 'application/json',
-      // ✅ 들어온 쿠키를 백엔드로 그대로 전달 (인증 필수)
+      // TODO: 들어온 쿠키를 백엔드로 그대로 전달 (인증 필수)
       cookie: req.headers.get('cookie') ?? '',
     },
   })
