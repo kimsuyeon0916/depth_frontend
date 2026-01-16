@@ -1,18 +1,16 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import PostCard from '@/components/PostCard'
-import type { TopicMyType } from '@/types/Topic.types'
-import { useGetPostsQuery } from '../queries/usePost'
-import { EmptyPost } from './EmptyPost'
+import { EmptyMyComment } from '@/features/(authenticated)/mypage/components/EmptyMyComment'
+import CommentCard from '@/components/CommentCard'
+import { useGetMyCommentsQuery } from '@/features/(authenticated)/mypage/queries/useGetMyComments'
 
-export function PostInfiniteList({ topic, size = 20 }: { topic?: TopicMyType; size?: number }) {
+export function MyCommentInfiniteList({ size = 20 }: { size?: number }) {
   const sentinelRef = useRef<HTMLDivElement | null>(null)
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, error } = useGetPostsQuery(
-    topic,
-    size,
-  )
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, error } =
+    useGetMyCommentsQuery(size)
+  console.log(data)
 
   const items = data?.pages.flatMap((p) => p.contents) ?? []
   const isEmpty = items.length === 0
@@ -43,12 +41,12 @@ export function PostInfiniteList({ topic, size = 20 }: { topic?: TopicMyType; si
   // if (status === 'error')
   //   return <p className="py-6 text-center">에러: {(error as Error).message}</p>
 
-  if (isEmpty) return <EmptyPost />
+  if (isEmpty) return <EmptyMyComment />
 
   return (
     <>
-      {items.map((post) => (
-        <PostCard key={post.postId} post={post} />
+      {items.map((comment) => (
+        <CommentCard key={comment.commentId} comment={comment} />
       ))}
 
       <div ref={sentinelRef} className="h-px" />

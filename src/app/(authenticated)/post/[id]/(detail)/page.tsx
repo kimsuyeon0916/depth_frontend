@@ -1,5 +1,4 @@
 import MarkdownViewer from '@/components/markdown/MarkdownViewer'
-import { Avatar } from '@/components/ui/Avatar'
 import { Reaction } from '@/features/(authenticated)/post/components/Reaction'
 import { CommentSection } from '@/features/(authenticated)/post/components/CommentSection'
 import { toRelativeTimeLabel } from '@/utils/toRelativeTimeLabel'
@@ -15,6 +14,7 @@ import { getPostDetailReaction } from '@/features/(authenticated)/post/apis/reac
 import { toggleReactionAction } from '@/features/(authenticated)/post/actions/toggleReaction.action'
 import { PostDetailHeader } from '@/features/(authenticated)/post/create/components/PostDetailHeader'
 import { RelativeTime } from '@/components/RelativeTime'
+import Avatar from '@/components/ui/Avatar'
 
 export default async function PostDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params

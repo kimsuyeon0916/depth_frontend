@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { CircleUserRound } from 'lucide-react'
 
-type AvatarSize = 'xs' | 'sm' | 'md' | 'lg'
+type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'big'
 type AvatarProps = {
   src?: string | null
   alt?: string
@@ -18,6 +18,12 @@ const sizeClasses: Record<AvatarSize, string> = {
   sm: 'h-8 w-8 text-xs',
   md: 'h-10 w-10 text-sm',
   lg: 'h-12 w-12 text-base',
+  xl: 'h-12 w-12 text-base',
+  '2xl': 'h-14 w-14 text-base',
+  '3xl': 'h-16 w-16 text-base',
+  '4xl': 'h-18 w-18 text-base',
+  '5xl': 'h-20 w-20 text-base',
+  big: 'h-30 w-30 text-base',
 }
 
 const sizePx: Record<AvatarSize, number> = {
@@ -25,9 +31,15 @@ const sizePx: Record<AvatarSize, number> = {
   sm: 32,
   md: 40,
   lg: 48,
+  xl: 60,
+  '2xl': 72,
+  '3xl': 84,
+  '4xl': 96,
+  '5xl': 108,
+  big: 168,
 }
 
-export function Avatar({ src, alt, name, size = 'sm', className }: AvatarProps) {
+export default function Avatar({ src, alt, name, size = 'sm', className }: AvatarProps) {
   const [imgError, setImgError] = useState(false)
 
   const normalizedSrc = useMemo(() => (src ?? '').trim(), [src])
@@ -45,7 +57,7 @@ export function Avatar({ src, alt, name, size = 'sm', className }: AvatarProps) 
     >
       {hasImage ? (
         <Image
-          src={normalizedSrc}
+          src={`${process.env.NEXT_PUBLIC_API_BASE}${normalizedSrc}`}
           alt={alt ?? name ?? 'Avatar'}
           fill
           sizes={`${px}px`}
