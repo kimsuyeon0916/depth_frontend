@@ -7,7 +7,6 @@ export async function getUser(): Promise<GetUserResponse> {
   const res = await server('/api/v1/users/myInfo', {
     method: 'GET',
     cache: 'no-store',
-    next: { tags: ['my-profile'] },
   })
 
   if (!res.ok) throw new Error(`유저 조회 실패: ${res.status}`)
