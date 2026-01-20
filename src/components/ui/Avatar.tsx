@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { CircleUserRound } from 'lucide-react'
 
-type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | 'big'
+type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl'
 type AvatarProps = {
   src?: string | null
   alt?: string
@@ -23,7 +23,7 @@ const sizeClasses: Record<AvatarSize, string> = {
   '3xl': 'h-16 w-16 text-base',
   '4xl': 'h-18 w-18 text-base',
   '5xl': 'h-20 w-20 text-base',
-  big: 'h-30 w-30 text-base',
+  '6xl': 'h-30 w-30 text-base',
 }
 
 const sizePx: Record<AvatarSize, number> = {
@@ -36,7 +36,7 @@ const sizePx: Record<AvatarSize, number> = {
   '3xl': 84,
   '4xl': 96,
   '5xl': 108,
-  big: 168,
+  '6xl': 168,
 }
 
 export function Avatar({ src, alt, name, size = 'sm', className }: AvatarProps) {
