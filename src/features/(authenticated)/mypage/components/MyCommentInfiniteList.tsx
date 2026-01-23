@@ -10,7 +10,6 @@ export function MyCommentInfiniteList({ size = 20 }: { size?: number }) {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status, error } =
     useGetMyCommentsQuery(size)
-  console.log(data)
 
   const items = data?.pages.flatMap((p) => p.contents) ?? []
   const isEmpty = items.length === 0

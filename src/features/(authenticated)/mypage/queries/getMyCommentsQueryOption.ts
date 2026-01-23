@@ -1,17 +1,17 @@
 import { getMyComments } from '@/features/(authenticated)/mypage/apis/getMyComment'
+import { DEFAULT_PAGE_SIZE } from '@/constants/pageSize'
 
-export const DEFAULT_POSTS_PAGE_SIZE = 20
 export type Cursor = number | null
 
 export const myCommentKeys = {
   all: ['my-comment'] as const,
   listBase: () => [...myCommentKeys.all, 'list'] as const,
   list: (params: { size?: number } = {}) =>
-    [...myCommentKeys.listBase(), params.size ?? DEFAULT_POSTS_PAGE_SIZE] as const,
+    [...myCommentKeys.listBase(), params.size ?? DEFAULT_PAGE_SIZE] as const,
 }
 
 export function getMyCommentsInfiniteQueryOption(params: { size?: number } = {}) {
-  const { size = DEFAULT_POSTS_PAGE_SIZE } = params
+  const { size = DEFAULT_PAGE_SIZE } = params
 
   return {
     queryKey: myCommentKeys.list({ size }),
