@@ -2,7 +2,7 @@ import MarkdownViewer from '@/components/markdown/MarkdownViewer'
 import { Reaction } from '@/features/(authenticated)/post/components/Reaction'
 import { CommentSection } from '@/features/(authenticated)/post/components/CommentSection'
 import { toRelativeTimeLabel } from '@/utils/toRelativeTimeLabel'
-import { Pencil, Trash2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, List, Pencil, Trash2 } from 'lucide-react'
 import { TOPIC_LABEL } from '@/types/Topic.types'
 import { getUser } from '@/features/(authenticated)/users/apis/user.api'
 import { redirect } from 'next/navigation'
@@ -14,6 +14,7 @@ import { getPostDetailReaction } from '@/features/(authenticated)/post/apis/reac
 import { toggleReactionAction } from '@/features/(authenticated)/post/actions/toggleReaction.action'
 import { PostDetailHeader } from '@/features/(authenticated)/post/components/PostDetailHeader'
 import { RelativeTime } from '@/components/RelativeTime'
+import { BackToListButton } from '@/features/(authenticated)/post/components/BackToListButton'
 import { Avatar } from '@/components/ui/Avatar'
 
 export default async function PostDetailPage({ params }: { params: Promise<{ id: number }> }) {
@@ -142,6 +143,35 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
             <Reaction reactions={reactions} onToggle={handleToggleReaction} />
 
             <CommentSection postId={id} userId={user.userId} />
+          </div>
+          <div className="mt-9 space-y-9">
+            {/*TODO 이전 다음 글 postId, title 받고 넣기 */}
+            <div className="flex items-center gap-4">
+              <Link
+                href=""
+                className="flex w-full flex-col gap-1 rounded-2xl border border-gray-300 px-2 py-4"
+              >
+                <div className="flex items-center gap-2 text-xs leading-none text-gray-400">
+                  <ArrowLeft size={12} />
+                  <span className="mt-0.5 leading-none">이전 글</span>
+                </div>
+                <span className="">이전 글 타이틀</span>
+              </Link>
+
+              <Link
+                href=""
+                className="flex w-full flex-col items-end gap-1 rounded-2xl border border-gray-300 px-2 py-4"
+              >
+                <div className="flex items-center gap-2 text-xs leading-none text-gray-400">
+                  <span className="mt-0.5 leading-none">다음 글</span>
+                  <ArrowRight size={12} />
+                </div>
+                <span className="">다음 글 타이틀</span>
+              </Link>
+            </div>
+            <div className="flex items-center justify-center">
+              <BackToListButton />
+            </div>
           </div>
         </section>
       </>
