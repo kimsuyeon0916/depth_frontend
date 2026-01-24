@@ -11,7 +11,7 @@ import {
 } from '../queries/useComment'
 import { CommentItem } from './CommentItem'
 import { useCommentSectionState } from '../hooks/useCommentSectionState'
-import { MentionBox } from '@/components/ui/MentionBox'
+import { MentionTextarea } from '@/components/mention-textarea/MentionTextarea'
 
 type MobileComposerState =
   | { mode: 'create' }
@@ -181,17 +181,14 @@ export function CommentSection({
           댓글 입력
         </label>
 
-        <div className="relative w-full">
-          <MentionBox members={[]} />
-          <textarea
-            id={`comment-${postId}`}
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-            maxLength={2000}
-            className="h-[100px] w-full resize-none rounded-lg bg-[#F9FAFB] px-3 py-2 text-[14px] leading-[20px] text-[#171719] focus:ring-1 focus:ring-[#155DFC]/30 focus:outline-none"
-            placeholder="댓글을 입력하세요..."
-          />
-        </div>
+        <MentionTextarea
+          id={`comment-${postId}`}
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          maxLength={2000}
+          className="h-[100px] w-full resize-none rounded-lg bg-[#F9FAFB] px-3 py-2 text-[14px] leading-[20px] text-[#171719] focus:ring-1 focus:ring-[#155DFC]/30 focus:outline-none"
+          placeholder="댓글을 입력하세요..."
+        />
 
         <div className="flex items-center gap-2">
           <button
