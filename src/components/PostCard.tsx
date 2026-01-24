@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import clsx from 'clsx'
 import type { PostCard, ReactionType } from '@/features/(authenticated)/post/types/Post.types'
-import { Avatar } from './ui/Avatar'
 import { toRelativeTimeLabel } from '@/utils/toRelativeTimeLabel'
 import { MessageCircle } from 'lucide-react'
 import { Reaction } from '@/features/(authenticated)/post/components/Reaction'
-import { toggleReactionAction } from '@/features/(authenticated)/post/actions/toggleReactionAction'
-import { TopicType } from '@/types/Topic.types'
+import { toggleReactionAction } from '@/features/(authenticated)/post/actions/toggleReaction.action'
 import { HREF_BY_TOPIC } from '@/features/(authenticated)/post/constants/topic'
+import { TopicType } from '@/types/Topic.types'
+import { Avatar } from '@/components/ui/Avatar'
 
 type PostCardProps = { post: PostCard }
 
@@ -32,7 +32,7 @@ export default function PostCard({ post }: PostCardProps) {
     <Link
       href={`/post/${post.postId}`}
       className={clsx(
-        'block w-full border-b border-[rgba(0,0,0,0.06)] bg-white px-4 py-4', // ✅ 모바일 16px
+        'block w-full border-b border-[rgba(0,0,0,0.06)] bg-white px-4 py-4',
         'md:box-border md:h-[201px] md:max-w-[1045px] md:overflow-hidden md:rounded-[8px] md:border-b-0 md:bg-white md:pb-px md:shadow-[0px_1px_2px_rgba(0,0,0,0.12)]',
         'md:p-0',
       )}
