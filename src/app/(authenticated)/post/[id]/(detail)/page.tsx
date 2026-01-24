@@ -22,8 +22,8 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
   const post = await getPostDetail(id)
   const user = await getUser()
 
-  const hasPrev = Boolean(post?.previousPostId)
-  const hasNext = Boolean(post?.nextPostId)
+  const hasPrev = Boolean(post?.previousPost.previousPostId)
+  const hasNext = Boolean(post?.nextPost.nextPostId)
 
   const wroteAt = post?.wroteAt ?? ''
   const wroteAtLabel = wroteAt ? toRelativeTimeLabel(wroteAt) : ''
@@ -147,18 +147,19 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
             <CommentSection postId={id} userId={user.userId} />
           </div>
           <div className="mt-9 space-y-9">
-            {/*TODO 이전 다음 글 postId, title 받고 넣기 */}
             <div className="flex items-center gap-4">
               {hasPrev ? (
                 <Link
-                  href={`/post/${post.previousPostId}`}
+                  href={`/post/${post.previousPost.previousPostId}`}
                   className="flex w-full flex-col gap-1 rounded-2xl border border-gray-300 px-2 py-4"
                 >
                   <div className="flex items-center gap-2 text-xs leading-none text-gray-400">
                     <ArrowLeft size={12} />
                     <span className="mt-0.5 leading-none">이전 글</span>
                   </div>
-                  <span className="mt-0.5 leading-none">{post?.previousPostTitle}</span>
+                  <span className="mt-0.5 leading-none">
+                    {post?.previousPost.previousPostTitle}
+                  </span>
                 </Link>
               ) : (
                 <div
@@ -167,20 +168,21 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
                 >
                   <div className="flex items-center gap-2 text-xs leading-none text-gray-400">
                     <ArrowLeft size={12} />
-                    <span className="mt-0.5 leading-none">이전 글이 없습니다</span>
+                    <span className="mt-0.5 leading-none">이전 글</span>
                   </div>
+                  <span className="mt-0.5 leading-none">이전 글이 없습니다</span>
                 </div>
               )}
               {hasNext ? (
                 <Link
-                  href={`/post/${post.nextPostId}`}
+                  href={`/post/${post.nextPost.nextPostId}`}
                   className="flex w-full flex-col items-end gap-1 rounded-2xl border border-gray-300 px-2 py-4"
                 >
                   <div className="flex items-center gap-2 text-xs leading-none text-gray-400">
                     <span className="mt-0.5 leading-none">다음 글</span>
                     <ArrowRight size={12} />
                   </div>
-                  <span className="mt-0.5 leading-none">{post?.nextPostTitle}</span>
+                  <span className="mt-0.5 leading-none">{post?.nextPost.nextPostTitle}</span>
                 </Link>
               ) : (
                 <div
@@ -189,8 +191,9 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
                 >
                   <div className="flex items-center gap-2 text-xs leading-none text-gray-400">
                     <ArrowLeft size={12} />
-                    <span className="mt-0.5 leading-none">다음 글이 없습니다</span>
+                    <span className="mt-0.5 leading-none">다음 글</span>
                   </div>
+                  <span className="mt-0.5 leading-none">다음 글이 없습니다</span>
                 </div>
               )}
             </div>
