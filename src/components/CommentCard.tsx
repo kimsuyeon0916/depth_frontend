@@ -6,6 +6,7 @@ import { Comment } from '@/features/(authenticated)/mypage/types/getMyCommentsRe
 import Link from 'next/link'
 import { toRelativeTimeLabel } from '@/utils/toRelativeTimeLabel'
 import { RelativeTime } from '@/components/RelativeTime'
+import { renderMentionText } from '@/utils/renderMentionText'
 
 export default function CommentCard({ comment }: { comment: Comment }) {
   const createdAt = comment?.createdAt ?? ''
@@ -13,7 +14,7 @@ export default function CommentCard({ comment }: { comment: Comment }) {
 
   return (
     <Link
-      href={`/post/${comment.postId}`}
+      href={`/post/${comment.postId}#comment-${comment.commentId}`}
       className={clsx(
         'block w-full border-b border-[rgba(0,0,0,0.06)] bg-white p-3',
         'md:box-border md:max-w-[1045px] md:overflow-hidden md:rounded-[8px] md:border-b-0 md:bg-white',
@@ -21,7 +22,7 @@ export default function CommentCard({ comment }: { comment: Comment }) {
       )}
     >
       <article className="flex flex-col gap-1">
-        <p className="font-medium">{comment.content}</p>
+        <p className="w-[calc(100%-60px)] font-medium">{renderMentionText(comment.content)}</p>
         <RelativeTime
           dateTime={createdAt}
           initialLabel={createdAtLabel}
