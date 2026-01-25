@@ -22,8 +22,12 @@ export type LoadingProps = LucideProps & {
 export function Loading({ variant = 'loader', label, ...iconProps }: LoadingProps) {
   const Icon = ICONS[variant]
   return (
-    <div role="status" className="flex items-center justify-center" aria-label={label ?? 'Loading'}>
-      <Icon {...iconProps} />
+    <div
+      role="status"
+      className="flex flex-col items-center justify-center gap-2"
+      aria-label={label ?? 'Loading'}
+    >
+      <Icon {...iconProps} className="animate-spin" />
       {label && <p className="text-xs">{label}</p>}
     </div>
   )
