@@ -24,5 +24,5 @@ export type MentionUser = {
   userId: number
   name: string
   profileImageUrl: string | null
-  username?: string
+  trackName: string
 }
