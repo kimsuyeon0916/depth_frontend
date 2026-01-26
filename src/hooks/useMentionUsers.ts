@@ -1,4 +1,4 @@
-import { fetchMentionUsers } from '@/services/mentionsUsers.service'
+import { getMentionUsers } from '@/services/mentionsUsers.service'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 export function useMentionUsers(size = 20, enabled = false) {
@@ -11,7 +11,7 @@ export function useMentionUsers(size = 20, enabled = false) {
       params.set('size', String(size))
       if (pageParam != null) params.set('cursorId', String(pageParam))
 
-      return await fetchMentionUsers(params.toString())
+      return await getMentionUsers(params.toString())
     },
     getNextPageParam: (lastPage) => {
       if (lastPage.length < size) return undefined
